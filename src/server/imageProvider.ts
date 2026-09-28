@@ -1,0 +1,165 @@
+import type { Recipe } from '../domain/recipes'
+import { GoogleGenAI } from '@google/genai'
+
+export interface ImageProvider {
+  generateDishImage(recipe: Recipe): Promise<string | null>
+}
+
+// Fallback images curated in the project for semantic matching if the external model is unavailable
+const LOCAL_ASSET_MATCHERS: Array<{ matches: (text: string) => boolean; path: string }> = [
+  {
+    matches: (t) => (t.includes('costela') || t.includes('ribs')) && (t.includes('abacaxi') || t.includes('barbecue') || t.includes('bbq')),
+    path: '/assets/recipes/costela-barbecue-com-abacaxi.webp',
+  },
+  {
+    matches: (t) => t.includes('pastel') && (t.includes('queijo') || t.includes('mussarela')),
+    path: '/assets/recipes/pastel-queijo.webp',
+  },
+  {
+    matches: (t) => t.includes('pastel') && t.includes('carne'),
+    path: '/assets/recipes/pastel-carne.webp',
+  },
+  {
+    matches: (t) => t.includes('pastel') && t.includes('frango'),
+    path: '/assets/recipes/pastel-frango.webp',
+  },
+  {
+    matches: (t) => t.includes('pastel') && (t.includes('banana') || t.includes('doce')),
+    path: '/assets/recipes/pastel-doce-banana.webp',
+  },
+  {
+    matches: (t) => t.includes('pastel') && (t.includes('pizza') || t.includes('misto')),
+    path: '/assets/recipes/pastel-pizza.webp',
+  },
+  {
+    matches: (t) => t.includes('salm') && (t.includes('legume') || t.includes('posta')),
+    path: '/assets/recipes/salmao-legumes.webp',
+  },
+  {
+    matches: (t) => (t.includes('peixe') || t.includes('tilapia')) && (t.includes('empanad') || t.includes('file')),
+    path: '/assets/recipes/peixe-empanado.webp',
+  },
+  {
+    matches: (t) => (t.includes('asa') || t.includes('coxinha da asa') || t.includes('tulipa')) && t.includes('frango'),
+    path: '/assets/recipes/asa-frango.webp',
+  },
+  {
+    matches: (t) => t.includes('frango') && (t.includes('crocante') || t.includes('dourad')),
+    path: '/assets/recipes/frango-crocante.webp',
+  },
+  {
+    matches: (t) => t.includes('coxinha') && !t.includes('asa'),
+    path: '/assets/recipes/coxinha-frango.webp',
+  },
+  {
+    matches: (t) => t.includes('hamburguer') || t.includes('burger'),
+    path: '/assets/recipes/hamburguer-caseiro.webp',
+  },
+  {
+    matches: (t) => t.includes('pao de queijo') || t.includes('pão de queijo'),
+    path: '/assets/recipes/pao-de-queijo.webp',
+  },
+  {
+    matches: (t) => t.includes('linguica') || t.includes('linguiça'),
+    path: '/assets/recipes/linguica-toscana.webp',
+  },
+  {
+    matches: (t) => t.includes('pizza'),
+    path: '/assets/recipes/pizza-marguerita.webp',
+  },
+  {
+    matches: (t) => (t.includes('batata') && (t.includes('rustica') || t.includes('frita') || t.includes('gomo'))),
+    path: '/assets/recipes/batata-rustica.webp',
+  },
+  {
+    matches: (t) => t.includes('legume') && t.includes('assad'),
+    path: '/assets/recipes/legumes-assados.webp',
+  },
+  {
+    matches: (t) => t.includes('bolo') && t.includes('chocolate'),
+    path: '/assets/recipes/bolo-chocolate.webp',
+  },
+  {
+    matches: (t) => t.includes('bolinho') && t.includes('carne'),
+    path: '/assets/recipes/bolinho-de-carne.webp',
+  },
+  {
+    matches: (t) => t.includes('nugget'),
+    path: '/assets/recipes/nuggets-caseiros.webp',
+  },
+]
+
+export function buildImagePromptForRecipe(recipe: Recipe): string {
+  const mainIngredients = recipe.ingredients
+    .slice(0, 5)
+    .map((item) => item.name)
+    .join(', ')
+
+  const cookingContext = recipe.airfryerTimeMinutes
+    ? `airfried to golden perfection at ${recipe.temperatureCelsius || 180}°C`
+    : 'crispy and appetizing from the airfryer'
+
+  return [
+    `Award-winning food photography of the finished dish "${recipe.title}".`,
+    `Dish description: ${recipe.description}.`,
+    `Key ingredients showcased: ${mainIngredients}.`,
+    `Cooking finish: ${cookingContext}.`,
+    `Visual style: authentic culinary presentation, plated on modern ceramic tableware in a bright Brazilian kitchen setting. Rich texture, natural warm lighting, delicious appetizing appearance, shallow depth of field.`,
+    `Crucial semantic requirements: the dish MUST visually represent "${recipe.title}" exactly. If it is pastel, it MUST look like an authentic rectangular Brazilian pastel with crispy bubbly crust (never an empanada, turnover, or samosa). If it is ribs with pineapple, show glazed ribs with caramelized pineapple slices.`,
+    `Negative requirements: no hands, no people, no watermark, no typography or text, no branding, no raw meat, no packaging.`,
+  ].join(' ')
+}
+
+export class GeminiImageProvider implements ImageProvider {
+  private readonly ai: GoogleGenAI
+
+  constructor(ai: GoogleGenAI) {
+    this.ai = ai
+  }
+
+  async generateDishImage(recipe: Recipe): Promise<string | null> {
+    const prompt = buildImagePromptForRecipe(recipe)
+    const imageCandidateModels = ['gemini-3.1-flash-lite-image', 'gemini-3.1-flash-image']
+
+    for (const model of imageCandidateModels) {
+      try {
+        console.log(`[ImageProvider] Chamando modelo de imagem: ${model} para "${recipe.title}"`)
+        const response = await this.ai.models.generateContent({
+          model,
+          contents: {
+            parts: [{ text: prompt }],
+          },
+          config: {
+            imageConfig: {
+              aspectRatio: '4:3',
+            },
+          },
+        })
+
+        const candidate = response.candidates?.[0]
+        if (candidate?.content?.parts) {
+          for (const part of candidate.content.parts) {
+            if (part.inlineData?.data) {
+              const mime = part.inlineData.mimeType || 'image/png'
+              console.log(`[ImageProvider] Imagem gerada com sucesso via ${model}`)
+              return `data:${mime};base64,${part.inlineData.data}`
+            }
+          }
+        }
+      } catch (error: any) {
+        console.warn(`[ImageProvider] Modelo ${model} falhou: ${error?.message || error}`)
+      }
+    }
+
+    // Elegant fallback: find semantic local matching asset if available
+    const searchTarget = `${recipe.title} ${recipe.slug} ${recipe.tags?.join(' ') || ''}`.toLowerCase()
+    const matchedAsset = LOCAL_ASSET_MATCHERS.find((item) => item.matches(searchTarget))
+    if (matchedAsset) {
+      console.log(`[ImageProvider] Usando fallback semântico correspondente: ${matchedAsset.path}`)
+      return matchedAsset.path
+    }
+
+    console.log('[ImageProvider] Usando fallback padrão de alimento')
+    return '/assets/placeholder-food.svg'
+  }
+}

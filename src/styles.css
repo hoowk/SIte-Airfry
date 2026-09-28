@@ -79,3 +79,149 @@
 @media (min-width:701px) and (max-width:1100px){.home-section .recipe-row{grid-template-columns:repeat(3,minmax(0,1fr))}.home-section .product-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:700px){html,body,#root,.app-shell{width:100%;min-width:0;max-width:100%;overflow-x:hidden}.home-content{width:100vw;min-width:0}.home-hero.composed-banner{width:100vw;height:auto;min-height:0;overflow:hidden}.home-hero.composed-banner>img{width:100vw;max-width:100vw;height:auto}.home-actions{width:calc(100vw - 32px);grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}.home-actions .action-card{min-width:0}.home-actions .action-card strong,.home-actions .action-card small{min-width:0;overflow:hidden;text-overflow:ellipsis}.home-section{width:calc(100vw - 32px)}.home-section .recipe-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-section .recipe-image{height:145px}.home-section .product-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-section .product-art{height:125px}.recipe-copy h3{font-size:13px}}
 .home-hero.composed-banner{min-height:0}.home-hero.composed-banner>img{height:auto;opacity:1;mask-image:none}
+.spinner{width:28px;height:28px;border:3px solid #f3e5d8;border-top-color:#e86120;border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dish-query-box{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.dish-query-box h3{margin:0;font-size:17px;color:var(--brand-ink);font-weight:700}
+.dish-query-box input{width:100%;height:48px;padding:0 16px;border:1px solid #ddd;border-radius:12px;font-size:15px;outline:none;background:#fff;transition:border-color 0.2s}
+.dish-query-box input:focus{border-color:var(--brand-orange)}
+.dish-action-group{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin-top:8px}
+.dish-action-group .or-divider{text-align:center;color:#888;font-size:13px;margin:2px 0}
+.dish-action-group .text-button{background:#fff;border:1px solid #e1d9d2;color:#555;font-weight:600}
+.dish-action-group .text-button:hover{border-color:#d5c3b5;color:#222}
+.dish-identification-result{background:#fdf9f5;border:1px solid #f1e2d4;border-radius:14px;padding:18px;margin-top:14px;display:flex;flex-direction:column;gap:12px}
+.dish-identification-result h3{margin:0;color:#c84f18;font-size:18px}
+.dish-identification-result p{margin:0;color:#555;font-size:14px}
+.action-buttons-column{display:flex;flex-direction:column;gap:8px}
+.not-found-banner{background:#fff4ee;border:1px solid #ffd8c4;border-radius:14px;padding:16px;margin-top:10px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+.not-found-banner p{margin:0;color:#9b380a;font-weight:600;font-size:14px}
+.status-indicator{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 0}
+.status-indicator strong{color:#e86120;font-size:14px}
+
+/* Banner search bar overlay */
+.hero-search-overlay{max-width:760px;width:calc(100% - 32px);margin:-32px auto 16px;position:relative;z-index:4}
+.hero-search-overlay .search{height:54px;border-radius:18px;border:2px solid #fedbc8;background:#fff;box-shadow:0 10px 28px rgba(40,24,14,0.14)}
+.hero-search-overlay .search input{font-size:15px;color:#1b1c1e}
+.header-search-placeholder{flex:1;max-width:460px}
+
+/* Compact Categories Section */
+.home-compact-categories{max-width:var(--container-content);margin:0 auto 32px}
+.home-compact-categories .categories-heading{margin-bottom:12px}
+.home-compact-categories .categories-heading h2{font-family:var(--font-display);font-size:18px;color:var(--brand-ink);margin:0}
+.home-compact-categories .categories-heading p{font-size:11px;font-weight:800;letter-spacing:.14em;color:#dca362;margin:0 0 4px}
+.compact-category-chips{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.compact-category-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 6px;border-radius:14px;background:#fbf8f4;border:1px solid #ebd9c8;color:#2c221b;font-weight:700;font-size:12px;transition:all var(--ease);cursor:pointer;text-align:center}
+.compact-category-btn:hover{background:#ffefe2;border-color:#f28549;color:#c84f18;transform:translateY(-2px);box-shadow:0 4px 12px rgba(232,95,36,0.12)}
+.compact-category-btn span.cat-icon{font-size:20px;line-height:1}
+
+@media (max-width:960px){
+  .compact-category-chips{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .compact-category-chips{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .compact-category-btn{padding:10px 4px;font-size:11px}
+  .compact-category-btn span.cat-icon{font-size:18px}
+}
+
+/* Product Card Pricing & Store */
+.product-card-pricing{margin:6px 0 8px;display:flex;align-items:baseline;gap:6px}
+.product-price{font-size:14px;font-weight:800;color:#c84f18}
+.product-store{font-size:11px;color:#777}
+
+/* Definitive Recipe Detail Screen Architecture */
+.detail-page{background:#fff;padding-bottom:60px}
+.recipe-metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:20px 0;background:#faf6f2;border:1px solid #ede3d8;border-radius:18px;padding:16px}
+.metric-box{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.metric-box svg{color:#e86120;margin-bottom:2px}
+.metric-box small{font-size:11px;color:#7a7269;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.metric-box strong{font-size:14px;color:#221b16;font-weight:800}
+
+.recipe-quick-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 24px}
+.recipe-action-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:14px;font-weight:700;font-size:14px;transition:all var(--ease)}
+.recipe-action-btn.secondary{background:#fdf8f4;border:1px solid #ebd9c8;color:#2c221b}
+.recipe-action-btn.secondary:hover{background:#ffefe2;border-color:#f28549;color:#c84f18}
+.recipe-action-btn.active{background:#ffefe2;border-color:#e85f24;color:#e85f24}
+.recipe-action-btn.primary{background:#e85f24;color:#fff}
+.recipe-action-btn.primary:hover{background:#d54d14}
+
+.recipe-subheading{display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px;border-bottom:2px solid #f2ede8;padding-bottom:10px}
+.recipe-subheading h2{font-family:var(--font-display);font-size:20px;color:#221b16;margin:0;display:flex;align-items:center;gap:8px}
+.recipe-subheading small{font-size:13px;color:#857c74;font-weight:600}
+
+/* Antes de começar */
+.before-start-card{background:#fff9f3;border:1px solid #f6decb;border-radius:16px;padding:18px 20px;margin-bottom:24px}
+.preheat-highlight{display:flex;align-items:center;gap:10px;background:#fde9dc;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:13px;font-weight:700;color:#a53b0e}
+.before-start-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.before-start-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#453a32;line-height:1.45}
+.before-start-list li span.dot{color:#e86120;font-weight:800;font-size:16px;line-height:1}
+
+/* Ingredientes com checkbox */
+.ingredients-checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.ingredient-check-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#faf7f4;border:1px solid #ede4db;border-radius:14px;transition:background var(--ease);cursor:pointer}
+.ingredient-check-row:hover{background:#fdf0e7;border-color:#f6d2bb}
+.ingredient-check-label{display:flex;align-items:center;gap:12px;cursor:pointer;flex:1;user-select:none}
+.ingredient-check-label input[type="checkbox"]{width:19px;height:19px;accent-color:#e86120;cursor:pointer}
+.ingredient-name{font-size:14px;color:#2b221b}
+.ingredient-quantity{font-size:14px;font-weight:800;color:#c84f18;margin-right:6px}
+.ingredient-category-tag{font-size:11px;background:#f0e6dc;color:#6b5d50;padding:3px 8px;border-radius:8px;font-weight:700}
+.ingredient-optional{font-size:11px;color:#9b8c7e;font-style:italic;margin-left:6px}
+
+.add-ingredients-action{display:flex;align-items:center;gap:12px;margin:16px 0 28px}
+.toast-notice{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#15803d;background:#dcfce7;border:1px solid #86efac;padding:8px 14px;border-radius:10px;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Modo de Preparo com Passos e Timer */
+.recipe-steps-flow{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
+.numbered-step-card{display:flex;gap:16px;background:#fff;border:1px solid #ebd9c8;border-radius:18px;padding:20px;box-shadow:0 4px 14px rgba(45,30,18,0.04);transition:transform var(--ease),border-color var(--ease)}
+.numbered-step-card:hover{border-color:#e88d58}
+.step-num-badge{width:36px;height:36px;border-radius:50%;background:#e85f24;color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center;flex-shrink:0;box-shadow:0 3px 8px rgba(232,95,36,0.3)}
+.step-details{flex:1;display:flex;flex-direction:column;gap:6px}
+.step-details h4{margin:0;font-family:var(--font-display);font-size:16px;color:#211b17}
+.step-details p{margin:0;font-size:14px;color:#4f443b;line-height:1.55}
+.step-tags-line{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:6px}
+.step-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#6b5849;background:#f7f0e8;padding:4px 10px;border-radius:8px}
+.step-tag.timer-tag{background:#ffefe2;color:#b94516;border:1px solid #ffd5b8}
+.step-warning-box{display:flex;align-items:center;gap:6px;background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:12px;color:#92400e;font-weight:600}
+
+/* Timer interativo embutido no passo */
+.step-timer-action{margin-top:10px}
+.step-timer-btn{display:inline-flex;align-items:center;gap:6px;background:#fff3eb;border:1px solid #f9caa7;color:#c84f18;font-weight:800;font-size:13px;padding:8px 14px;border-radius:10px;transition:all var(--ease);cursor:pointer}
+.step-timer-btn:hover{background:#fedbc5;border-color:#e86120}
+.inline-timer-widget{display:inline-flex;align-items:center;gap:12px;background:#2b1d16;color:#fff;padding:8px 16px;border-radius:12px;box-shadow:0 4px 12px rgba(43,29,22,0.25)}
+.inline-timer-clock{font-family:monospace;font-size:18px;font-weight:800;color:#ffc928;letter-spacing:.05em}
+.inline-timer-widget button{font-size:12px;font-weight:700;padding:4px 8px;border-radius:6px;background:#e85f24;color:#fff}
+.inline-timer-widget button.secondary-t{background:#453026;color:#e8d4c5}
+
+/* Seções Dica, Substituições, Versão Mais Leve */
+.recipe-extras-group{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+.advice-box{background:#fdfaf6;border:1px solid #ebd9c8;border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.advice-box.tips{background:#f7f9ff;border-color:#d5e0fc}
+.advice-box.substitutions{background:#fefbf4;border-color:#fce8c3}
+.advice-box.lighter{background:#f4fbf5;border-color:#c8edd0}
+.advice-box h4{margin:0;font-size:15px;font-family:var(--font-display);display:flex;align-items:center;gap:8px}
+.advice-box.tips h4{color:#2563eb}
+.advice-box.substitutions h4{color:#b45309}
+.advice-box.lighter h4{color:#15803d}
+.advice-box ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.advice-box li{font-size:13px;color:#453d35;line-height:1.45}
+.advice-box p{margin:0;font-size:13px;color:#453d35;line-height:1.45}
+
+/* Lista de compras categorizada */
+.shopping-grocery-category{margin-bottom:24px}
+.shopping-cat-badge{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#c84f18;background:#fff3eb;border:1px solid #fedbc8;padding:4px 10px;border-radius:8px;display:inline-block;margin-bottom:8px}
+.shopping-recipe-sources{font-size:11px;color:#857c74;margin-top:2px}
+
+@media (max-width:900px){
+  .recipe-metrics-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+  .recipe-extras-group{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .recipe-metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .recipe-quick-actions{flex-direction:column}
+  .recipe-action-btn{width:100%}
+  .numbered-step-card{padding:14px;gap:12px}
+  .step-num-badge{width:30px;height:30px;font-size:13px}
+  .ingredient-check-row{padding:10px 12px}
+}
+
+
