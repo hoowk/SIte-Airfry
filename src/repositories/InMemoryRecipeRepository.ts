@@ -9,6 +9,7 @@ export class InMemoryRecipeRepository implements RecipeRepository {
   async getById(id: string) { return this.source.find(recipe => recipe.id === id) ?? null }
   getAll() { return [...this.source] }
   searchAll(query = '') { return this.source.filter(recipe => this.matchesQuery(recipe, query)) }
+  add(recipe: Recipe) { if (!this.source.some(r => r.id === recipe.id)) this.source.unshift(recipe) }
   private filter({ limit = 20, cursor = '0', query = '', category, tags = [], ingredientIds = [] }: RecipeQuery): PageResult<Recipe> {
     const offset = Number(cursor) || 0
     const filtered = this.source.filter(recipe => {
